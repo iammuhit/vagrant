@@ -19,6 +19,11 @@ Vagrant.configure("2") do |config|
       git config --global user.name "Nurul Amin Muhit"
       git config --global user.email "me@muhit.me"
       git config --global init.defaultBranch "master"
+
+      # Configure git for the vagrant user specifically
+      git config --file /home/vagrant/.gitconfig user.name "Vagrant User"
+      git config --file /home/vagrant/.gitconfig user.email "vagrant@example.com"
+      git config --file /home/vagrant/.gitconfig init.defaultBranch "main"
     SHELL
   end
 
