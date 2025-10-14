@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Update apt cache packages
+      ansible.builtin.apt:
+        update_cache: yes
+    
+    - name: Install Git Package
+      ansible.builtin.apt:
+        name: git
+        state: present
+    
+    - name: Verify Git Installation
+      ansible.builtin.command: git --version
+      register: git_version
+    - debug:
+        msg: "Installed {{ git_version.stdout }}"
+    
+    - name: Configure Git User
+      become_user: vagrant
+      ansible.builtin.shell: |
+        git config --global user.name "Nurul Amin Muhit"
+        git config --global user.email "me@muhit.me"
+        git config --global init.defaultBranch "master"
+
+    - name: Verify Git Configuration
+      become_user: vagrant
+      ansible.builtin.command: git config --global --list --show-origin
+      register: git_config_details
+    - debug:
+        msg: "{{ git_config_details.stdout_lines }}"
+
